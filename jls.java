@@ -1,18 +1,35 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class jls {
     public static void main(String[] args){
-        produceCVS(args[0]);
+        String cvsContent = produceCVS(args[0]);
+
+        try {
+            File CVSfile = new File("output.cvs");
+            CVSfile.createNewFile();
+        } catch (IOException e) {
+            System.out.println("File creation ERROR");
+        }
+        
+        try {
+            FileWriter writer = new FileWriter("output.cvs");
+            writer.write(cvsContent);
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("FILEWRITER error");
+        }
     }
     
 
-    public static void produceCVS(String path){
-        
+    public static String produceCVS(String path){
+        String outputCVS = "";
         File parent = new File(path);
 
         if(!parent.isDirectory()){
-            return;
+            return outputCVS;
         }
 
 
@@ -20,13 +37,17 @@ public class jls {
         
         for(File i : children){
             if (i.isDirectory()){
-                produceCVS(path + "/" + i.getName());
+                outputCVS = outputCVS + produceCVS(path + "/" + i.getName());
             }
             else{
                 String child = i.getName();
-                System.out.println(path + "/" + child + ", " + getPackageNameFromPath(path) + ", " + child.substring(0, child.indexOf('.')));
+                String output = path + "/" + child + ", " + getPackageNameFromPath(path) + ", " + child.substring(0, child.indexOf('.'));
+                outputCVS += output + "\n";
+                System.out.println(output);
             }
         }
+
+        return outputCVS;
     }
     
     public static String getPackageNameFromPath(String path){
