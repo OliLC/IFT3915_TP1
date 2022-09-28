@@ -5,6 +5,14 @@ public class lcsec {
         produceCSVFile(args[0]);
     }
 
+    /**
+     * Reads each file in the directory and subdirectories, counts the amount of times
+     * fileName is mentioned
+     *
+     * @param fileName file name that the function will search for
+     * @param path     path in which to search
+     * @return if no files mention fileName 0, else amount of files mentioning fileName
+     */
     public static int couplageSimpleEntreClasses(String fileName, String path) {
         int counter = 0;
         File parent = new File(path);
@@ -18,7 +26,8 @@ public class lcsec {
                     reader = new BufferedReader(new FileReader(i.getName()));
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        if(line.contains(fileName)){}
+                        if (line.contains(fileName)) {
+                        }
                         counter++;
                     }
                     reader.close();
