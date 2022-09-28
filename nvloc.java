@@ -23,18 +23,17 @@ public class nvloc {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             int lines = 0;
             String line;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    if (!"".equals(line.trim()))
-                        lines++;
-                }
-                System.out.println(lines);
-            } catch (IOException e) {
-                System.out.println("Empty line or file");
-                return;
+            while ((line = reader.readLine()) != null) {
+                if (!"".equals(line.trim()))
+                    lines++;
             }
+            reader.close();
+            System.out.println(lines + "lines");
         } catch (FileNotFoundException fnfe) {
             System.out.println("File not found");
+            return;
+        } catch (IOException e) {
+            System.out.println("Empty line or file");
             return;
         }
     }
