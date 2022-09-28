@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class jls {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         String csvContent = produceCSVContent(args[0]);
         produceCSVFile(csvContent);
     }
-    public static void produceCSVFile(String content){
+
+    public static void produceCSVFile(String content) {
         try {
             File CSVFile = new File("output.csv");
             CSVFile.createNewFile();
@@ -25,24 +26,23 @@ public class jls {
         }
     }
 
-    public static String produceCSVContent(String path){
+    public static String produceCSVContent(String path) {
         String outputCSV = "";
         File parent = new File(path);
 
-        if(!parent.isDirectory()){
+        if (!parent.isDirectory()) {
             return outputCSV;
         }
 
 
         File[] children = parent.listFiles();
-        
-        for(File i : children){
-            if (i.isDirectory()){
+
+        for (File i : children) {
+            if (i.isDirectory()) {
                 outputCSV = outputCSV + produceCSVContent(path + "/" + i.getName());
-            }
-            else{
+            } else {
                 String childName = i.getName();
-                String outputLine = produceCSVLine(path,childName);
+                String outputLine = produceCSVLine(path, childName);
                 outputCSV += outputLine + "\n";
                 System.out.println(outputLine);
             }
@@ -50,13 +50,14 @@ public class jls {
 
         return outputCSV;
     }
-    public static String produceCSVLine(String path, String childName){
+
+    public static String produceCSVLine(String path, String childName) {
 
         String outputLine = path + "/" + childName + ", " + getPackageNameFromPath(path) + ", " + childName.substring(0, childName.indexOf('.'));
         return outputLine;
     }
-    
-    public static String getPackageNameFromPath(String path){
+
+    public static String getPackageNameFromPath(String path) {
         return path.substring(2).replaceAll("/", ".");
     }
 }
