@@ -23,15 +23,34 @@ public class lcsec {
                 counter += couplageSimpleEntreClasses(fileName, path + "/" + i.getName());
             } else {
                 try {
-                    reader = new BufferedReader(new FileReader(i.getName()));
                     String line;
+                    boolean found = false;
+
+                    //checks if main file is mentioned in other file
+                    reader = new BufferedReader(new FileReader(i.getName()));
+
                     while ((line = reader.readLine()) != null) {
                         if (line.contains(fileName)) {
+                            found = true;
+                            break;
                         }
-                        counter++;
                     }
                     reader.close();
-
+                    //checks if other file is mentioned in main file
+                    if (!found) {
+                        reader = new BufferedReader(new FileReader(fileName));
+                        while ((line = reader.readLine()) != null) {
+                            if (line.contains(i.getName())) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        reader.close();
+                    }
+                    if (found)
+                        counter++;
+                    
+                    found = false;
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("File not found");
                     continue;
