@@ -8,16 +8,16 @@ public class nvloc {
         nonEmptyLines(args[0]);
     }
 
-    public static void nonEmptyLines(String file) {
+    public static int nonEmptyLines(String file) {
         if (file.length() > 5) {
             String extension = file.substring(file.length() - 5);
             if (!extension.equals(".java")) {
                 System.out.println("Not a java file.");
-                return;
+                return 0;
             }
         } else {
             System.out.println("Input is too short to be a java file");
-            return;
+            return 0;
         }
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -29,12 +29,13 @@ public class nvloc {
             }
             reader.close();
             System.out.println(lines + "lines");
+            return lines;
         } catch (FileNotFoundException fnfe) {
             System.out.println("File not found");
-            return;
+            return 0;
         } catch (IOException e) {
             System.out.println("Empty line or file");
-            return;
+            return 0;
         }
     }
 }
