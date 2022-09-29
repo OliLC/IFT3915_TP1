@@ -49,7 +49,7 @@ public class lcsec {
                     }
                     if (found)
                         counter++;
-                    
+
                     found = false;
                 } catch (FileNotFoundException fnfe) {
                     System.out.println("File not found");
@@ -65,7 +65,7 @@ public class lcsec {
     public static void produceCSVFile(String path) {
         String content = produceCSVContent(path);
         jls fileProducer = new jls();
-        jls.produceCSVFile(content);
+        fileProducer.produceCSVFile(content);
     }
 
     public static String produceCSVContent(String path) {
