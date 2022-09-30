@@ -27,8 +27,7 @@ public class lcsec {
                     boolean found = false;
 
                     //checks if main file is mentioned in other file
-                    reader = new BufferedReader(new FileReader(i.getName()));
-
+                    reader = new BufferedReader(new FileReader(i));
                     while ((line = reader.readLine()) != null) {
                         if (line.contains(fileName)) {
                             found = true;
@@ -38,7 +37,8 @@ public class lcsec {
                     reader.close();
                     //checks if other file is mentioned in main file
                     if (!found) {
-                        reader = new BufferedReader(new FileReader(fileName));
+                        System.out.println(fileName);
+                        reader = new BufferedReader(new FileReader(path + "/" + fileName));
                         while ((line = reader.readLine()) != null) {
                             if (line.contains(i.getName())) {
                                 found = true;
@@ -85,9 +85,9 @@ public class lcsec {
                 outputCSV = outputCSV + produceCSVContent(path + "/" + i.getName());
             } else {
                 String childName = i.getName();
-                String outputLine = lineProducer.produceCSVLine(path, childName) + "," + couplageSimpleEntreClasses(childName, path);
+                String outputLine = lineProducer.produceCSVContent(path) + "," + couplageSimpleEntreClasses(childName, path);
                 outputCSV += outputLine + "\n";
-                System.out.println(outputLine);
+                //System.out.println(outputLine);
             }
         }
 
