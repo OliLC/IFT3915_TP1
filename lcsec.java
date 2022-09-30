@@ -23,7 +23,6 @@ public class lcsec {
         File parent = new File(path);
         File[] children = parent.listFiles();
         BufferedReader reader;
-        System.out.println(parent.getName() + "size:" + children.length);
         for (File i : children) {
             if (i.isDirectory()) {
                 counter += couplageSimpleEntreClasses(mainFile, path + "/" + i.getName());
@@ -71,7 +70,6 @@ public class lcsec {
                 }
             }
         }
-        System.out.println(fileName + " " + counter);
         return counter;
     }
 
@@ -97,7 +95,7 @@ public class lcsec {
             if (i.isDirectory()) {
                 outputCSV = outputCSV + produceCSVContent(path + "/" + i.getName());
             } else {
-                String outputLine = lineProducer.produceCSVContent(path) + "," + couplageSimpleEntreClasses(i, path);
+                String outputLine = lineProducer.produceCSVLine(path,i.getName()) + "," + couplageSimpleEntreClasses(i, path);
                 outputCSV += outputLine + "\n";
             }
         }
