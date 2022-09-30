@@ -13,52 +13,65 @@ public class lcsec {
      * @param path     path in which to search
      * @return if no files mention fileName 0, else amount of files mentioning fileName
      */
-    public static int couplageSimpleEntreClasses(String fileName, String path) {
+    public static int couplageSimpleEntreClasses(File mainFile, String path) {
         int counter = 0;
+        String fileName = mainFile.getName();
+        int pos = fileName.lastIndexOf(".");
+        if (pos > 0) {
+            fileName = fileName.substring(0, pos);
+        }
         File parent = new File(path);
         File[] children = parent.listFiles();
         BufferedReader reader;
+        System.out.println(parent.getName() + "size:" + children.length);
         for (File i : children) {
             if (i.isDirectory()) {
-                counter += couplageSimpleEntreClasses(fileName, path + "/" + i.getName());
+                counter += couplageSimpleEntreClasses(mainFile, path + "/" + i.getName());
             } else {
-                try {
-                    String line;
-                    boolean found = false;
+                if (!i.getName().equals(mainFile.getName())) {
+                    try {
+                        String line;
+                        boolean found = false;
 
-                    //checks if main file is mentioned in other file
-                    reader = new BufferedReader(new FileReader(i));
-                    while ((line = reader.readLine()) != null) {
-                        if (line.contains(fileName)) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    reader.close();
-                    //checks if other file is mentioned in main file
-                    if (!found) {
-                        System.out.println(fileName);
-                        reader = new BufferedReader(new FileReader(path + "/" + fileName));
+                        //checks if main file is mentioned in other file
+                        reader = new BufferedReader(new FileReader(i));
                         while ((line = reader.readLine()) != null) {
-                            if (line.contains(i.getName())) {
+                            if (line.contains(fileName)) {
                                 found = true;
                                 break;
                             }
                         }
                         reader.close();
-                    }
-                    if (found)
-                        counter++;
+                        //checks if other file is mentioned in main file
+                        if (!found) {
+                            String otherFileName = i.getName();
+                            int index = otherFileName.lastIndexOf(".");
+                            if (index > 0) {
+                                otherFileName = otherFileName.substring(0, index);
+                            }
+                            reader = new BufferedReader(new FileReader(mainFile));
+                            while ((line = reader.readLine()) != null) {
+                                if (line.contains(i.getName())) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            reader.close();
+                        }
+                        if (found)
+                            counter++;
 
-                    found = false;
-                } catch (FileNotFoundException fnfe) {
-                    System.out.println("File not found");
-                    continue;
-                } catch (IOException e) {
-                    System.out.println("Empty line or file");
+                        found = false;
+                    } catch (FileNotFoundException fnfe) {
+                        System.out.println("File not found");
+                        continue;
+                    } catch (IOException e) {
+                        System.out.println("Empty line or file");
+                    }
                 }
             }
         }
+        System.out.println(fileName + " " + counter);
         return counter;
     }
 
@@ -84,10 +97,8 @@ public class lcsec {
             if (i.isDirectory()) {
                 outputCSV = outputCSV + produceCSVContent(path + "/" + i.getName());
             } else {
-                String childName = i.getName();
-                String outputLine = lineProducer.produceCSVContent(path) + "," + couplageSimpleEntreClasses(childName, path);
+                String outputLine = lineProducer.produceCSVContent(path) + "," + couplageSimpleEntreClasses(i, path);
                 outputCSV += outputLine + "\n";
-                //System.out.println(outputLine);
             }
         }
 
